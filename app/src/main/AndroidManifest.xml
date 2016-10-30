@@ -17,6 +17,8 @@
         </activity>
 
         <service android:name=".DetectorService" />
+        <service android:name=".ScreenService" />
+
         <receiver android:name=".ScreenActionReceiver" />
     </application>
 
