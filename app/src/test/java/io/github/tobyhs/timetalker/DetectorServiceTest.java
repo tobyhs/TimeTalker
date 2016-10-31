@@ -1,6 +1,8 @@
 package io.github.tobyhs.timetalker;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,5 +48,16 @@ public class DetectorServiceTest {
 
         serviceController.destroy();
         assertThat(ttsShadow.isShutdown(), is(true));
+    }
+
+    @Test
+    public void hearShake_WithRingerOff_DoesNotSpeak() {
+        DetectorService service = Robolectric.setupService(DetectorService.class);
+        AudioManager audioManager = (AudioManager) service.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+
+        service.hearShake();
+
+        assertThat(service.textToSpeech, is(nullValue()));
     }
 }

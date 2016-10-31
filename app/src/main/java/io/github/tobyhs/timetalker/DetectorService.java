@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
@@ -19,6 +20,7 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
     TimeFormatter timeFormatter = new TimeFormatter();
     TextToSpeech textToSpeech;
     ShakeDetector shakeDetector;
+    AudioManager audioManager;
     Handler deathHandler;
 
     @Override
@@ -27,6 +29,8 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
 
         shakeDetector = new ShakeDetector(this);
         shakeDetector.start((SensorManager) getSystemService(Context.SENSOR_SERVICE));
+
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         deathHandler = new Handler();
         deathHandler.postDelayed(new Runnable() {
@@ -55,8 +59,10 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
 
     @Override
     public void hearShake() {
-        initTextToSpeech();
-        textToSpeech.speak(timeFormatter.format(), TextToSpeech.QUEUE_FLUSH, null);
+        if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
+            initTextToSpeech();
+            textToSpeech.speak(timeFormatter.format(), TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     private synchronized void initTextToSpeech() {
