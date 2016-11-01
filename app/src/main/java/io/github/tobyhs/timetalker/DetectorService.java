@@ -15,7 +15,8 @@ import com.squareup.seismic.ShakeDetector;
  * This is a service that detects the appropriate event to trigger the phone to speak the time.
  */
 public class DetectorService extends Service implements ShakeDetector.Listener {
-    public static long LIFETIME_MILLIS = 10000;
+    public static final long LIFETIME_MILLIS = 10000;
+    private static boolean sRunning = false;
 
     TimeFormatter timeFormatter = new TimeFormatter();
     TextToSpeech textToSpeech;
@@ -23,9 +24,19 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
     AudioManager audioManager;
     Handler deathHandler;
 
+    /**
+     * Determines whether this service is running.
+     *
+     * @return whether this service is running
+     */
+    public static boolean isRunning() {
+        return sRunning;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        sRunning = true;
 
         shakeDetector = new ShakeDetector(this);
         shakeDetector.start((SensorManager) getSystemService(Context.SENSOR_SERVICE));
@@ -49,6 +60,7 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
             textToSpeech.shutdown();
         }
 
+        sRunning = false;
         super.onDestroy();
     }
 

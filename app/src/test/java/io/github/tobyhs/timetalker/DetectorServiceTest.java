@@ -24,6 +24,16 @@ import static org.robolectric.Shadows.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 public class DetectorServiceTest {
     @Test
+    public void isRunning() {
+        ServiceController<DetectorService> controller = Robolectric.buildService(DetectorService.class);
+        controller.create();
+        assertThat(DetectorService.isRunning(), is(true));
+
+        controller.destroy();
+        assertThat(DetectorService.isRunning(), is(false));
+    }
+
+    @Test
     public void onBind_ReturnsNull() {
         DetectorService service = new DetectorService();
         assertThat(service.onBind(new Intent()), is(nullValue()));
@@ -31,9 +41,9 @@ public class DetectorServiceTest {
 
     @Test
     public void hearShake_SpeaksTime() {
-        ServiceController<DetectorService> serviceController = Robolectric.buildService(DetectorService.class);
-        serviceController.create();
-        DetectorService service = serviceController.get();
+        ServiceController<DetectorService> controller = Robolectric.buildService(DetectorService.class);
+        controller.create();
+        DetectorService service = controller.get();
 
         TimeFormatter timeFormatter = mock(TimeFormatter.class);
         String formattedTime = "9 45 AM";
@@ -46,7 +56,7 @@ public class DetectorServiceTest {
         String spokenText = ttsShadow.getLastSpokenText();
         assertThat(spokenText, is(formattedTime));
 
-        serviceController.destroy();
+        controller.destroy();
         assertThat(ttsShadow.isShutdown(), is(true));
     }
 
