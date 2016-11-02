@@ -16,7 +16,6 @@ import com.squareup.seismic.ShakeDetector;
  */
 public class DetectorService extends Service implements ShakeDetector.Listener {
     public static final long LIFETIME_MILLIS = 10000;
-    private static boolean sRunning = false;
 
     TimeFormatter timeFormatter = new TimeFormatter();
     TextToSpeech textToSpeech;
@@ -24,19 +23,9 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
     AudioManager audioManager;
     Handler deathHandler;
 
-    /**
-     * Determines whether this service is running.
-     *
-     * @return whether this service is running
-     */
-    public static boolean isRunning() {
-        return sRunning;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        sRunning = true;
 
         shakeDetector = new ShakeDetector(this);
         shakeDetector.start((SensorManager) getSystemService(Context.SENSOR_SERVICE));
@@ -60,7 +49,6 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
             textToSpeech.shutdown();
         }
 
-        sRunning = false;
         super.onDestroy();
     }
 

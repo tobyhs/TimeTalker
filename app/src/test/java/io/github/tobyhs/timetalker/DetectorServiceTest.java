@@ -24,16 +24,6 @@ import static org.robolectric.Shadows.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 public class DetectorServiceTest {
     @Test
-    public void isRunning() {
-        ServiceController<DetectorService> controller = Robolectric.buildService(DetectorService.class);
-        controller.create();
-        assertThat(DetectorService.isRunning(), is(true));
-
-        controller.destroy();
-        assertThat(DetectorService.isRunning(), is(false));
-    }
-
-    @Test
     public void onBind_ReturnsNull() {
         DetectorService service = new DetectorService();
         assertThat(service.onBind(new Intent()), is(nullValue()));

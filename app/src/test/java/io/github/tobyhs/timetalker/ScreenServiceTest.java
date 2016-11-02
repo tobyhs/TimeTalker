@@ -17,6 +17,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(RobolectricTestRunner.class)
 public class ScreenServiceTest {
     @Test
+    public void isRunning() {
+        ServiceController<ScreenService> controller = Robolectric.buildService(ScreenService.class);
+        controller.create();
+        assertThat(ScreenService.isRunning(), is(true));
+
+        controller.destroy();
+        assertThat(ScreenService.isRunning(), is(false));
+    }
+
+    @Test
     public void registersReceiverForScreenOn() {
         Intent intent = new Intent(Intent.ACTION_SCREEN_ON);
         ShadowApplication shadowApp = ShadowApplication.getInstance();
