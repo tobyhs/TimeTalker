@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Time Talker</string>
 
-    <string name="start">Start</string>
-    <string name="stop">Stop</string>
+    <string name="enabled">Enabled</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
 </resources>

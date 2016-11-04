@@ -7,17 +7,12 @@
     android:orientation="vertical"
     tools:context="io.github.tobyhs.timetalker.MainActivity">
 
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="wrap_content"
+    <Switch
+        android:id="@+id/enabledSwitch"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="startService"
-        android:text="@string/start" />
-
-    <Button
-        android:id="@+id/stopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="stopService"
-        android:text="@string/stop" />
+        android:text="@string/enabled"
+        android:showText="true"
+        android:textOn="@string/on"
+        android:textOff="@string/off" />
 </LinearLayout>

@@ -1,6 +1,7 @@
 package io.github.tobyhs.timetalker;
 
 import android.content.ComponentName;
+import android.widget.Switch;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.util.ServiceController;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,15 +21,29 @@ import static org.robolectric.Shadows.shadowOf;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class MainActivityTest {
     @Test
-    public void clickingStartAndStopButtons() {
+    public void toggleEnabledWhenServiceRunning() {
+        ServiceController<ScreenService> controller = Robolectric.buildService(ScreenService.class);
+        controller.create();
         MainActivity activity = Robolectric.setupActivity(MainActivity.class);
-        ShadowActivity activityShadow = shadowOf(activity);
         ComponentName componentName = new ComponentName(activity, ScreenService.class);
 
-        activity.findViewById(R.id.startButton).performClick();
-        assertThat(activityShadow.getNextStartedService().getComponent(), is(componentName));
+        Switch enabledSwitch = (Switch) activity.findViewById(R.id.enabledSwitch);
+        assertThat(enabledSwitch.isChecked(), is(true));
 
-        activity.findViewById(R.id.stopButton).performClick();
-        assertThat(activityShadow.getNextStoppedService().getComponent(), is(componentName));
+        controller.destroy();
+    }
+
+    @Test
+    public void togglingStartsAndStopsService() {
+        MainActivity activity = Robolectric.setupActivity(MainActivity.class);
+        ShadowActivity shadowActivity = shadowOf(activity);
+        ComponentName serviceComponent = new ComponentName(activity, ScreenService.class);
+        Switch enabledSwitch = (Switch) activity.findViewById(R.id.enabledSwitch);
+
+        enabledSwitch.toggle();
+        assertThat(shadowActivity.getNextStartedService().getComponent(), is(serviceComponent));
+
+        enabledSwitch.toggle();
+        assertThat(shadowActivity.getNextStoppedService().getComponent(), is(serviceComponent));
     }
 }
