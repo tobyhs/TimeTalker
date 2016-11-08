@@ -27,10 +27,17 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
     public void onCreate() {
         super.onCreate();
 
-        shakeDetector = new ShakeDetector(this);
-        shakeDetector.start((SensorManager) getSystemService(Context.SENSOR_SERVICE));
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                // TODO: handle error status
+            }
+        });
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+        shakeDetector = new ShakeDetector(this);
+        shakeDetector.start((SensorManager) getSystemService(Context.SENSOR_SERVICE));
 
         deathHandler = new Handler();
         deathHandler.postDelayed(new Runnable() {
@@ -44,10 +51,7 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
     @Override
     public void onDestroy() {
         shakeDetector.stop();
-
-        if (textToSpeech != null) {
-            textToSpeech.shutdown();
-        }
+        textToSpeech.shutdown();
 
         super.onDestroy();
     }
@@ -60,20 +64,7 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
     @Override
     public void hearShake() {
         if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
-            initTextToSpeech();
             textToSpeech.speak(timeFormatter.format(), TextToSpeech.QUEUE_FLUSH, null);
-        }
-    }
-
-    private synchronized void initTextToSpeech() {
-        if (textToSpeech == null) {
-            Context context = getApplicationContext();
-            textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-                @Override
-                public void onInit(int status) {
-                    // TODO: handle error status
-                }
-            });
         }
     }
 }

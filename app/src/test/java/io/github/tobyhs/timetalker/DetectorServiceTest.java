@@ -58,6 +58,7 @@ public class DetectorServiceTest {
 
         service.hearShake();
 
-        assertThat(service.textToSpeech, is(nullValue()));
+        ShadowTextToSpeech ttsShadow = shadowOf(service.textToSpeech);
+        assertThat(ttsShadow.getLastSpokenText(), is(nullValue()));
     }
 }
