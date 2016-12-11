@@ -8,6 +8,7 @@ import android.media.AudioManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
+import android.widget.Toast;
 
 import com.squareup.seismic.ShakeDetector;
 
@@ -30,7 +31,15 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                // TODO: handle error status
+                if (status != TextToSpeech.SUCCESS) {
+                    String ttsInitFailureMsg = getString(
+                            R.string.ttsInitFailure, getString(R.string.app_name)
+                    );
+
+                    Toast.makeText(
+                            DetectorService.this, ttsInitFailureMsg, Toast.LENGTH_LONG
+                    ).show();
+                }
             }
         });
 
