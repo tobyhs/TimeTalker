@@ -22,7 +22,6 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
     TextToSpeech textToSpeech;
     ShakeDetector shakeDetector;
     AudioManager audioManager;
-    Handler deathHandler;
 
     @Override
     public void onCreate() {
@@ -48,8 +47,7 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
         shakeDetector = new ShakeDetector(this);
         shakeDetector.start((SensorManager) getSystemService(Context.SENSOR_SERVICE));
 
-        deathHandler = new Handler();
-        deathHandler.postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 stopSelf();
