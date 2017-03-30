@@ -1,6 +1,9 @@
 package io.github.tobyhs.timetalker;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +13,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.util.ServiceController;
 
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -33,7 +38,9 @@ public class ScreenServiceTest {
 
         ServiceController serviceController = Robolectric.buildService(ScreenService.class);
         serviceController.create();
-        assertThat(shadowApp.hasReceiverForIntent(intent), is(true));
+        List<BroadcastReceiver> receivers = shadowApp.getReceiversForIntent(intent);
+        assertThat(receivers, hasItem(isA(ScreenActionReceiver.class)));
+
         serviceController.destroy();
         assertThat(shadowApp.hasReceiverForIntent(intent), is(false));
     }
