@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Switch enabledSwitch = (Switch) findViewById(R.id.enabledSwitch);
+        Switch enabledSwitch = findViewById(R.id.enabledSwitch);
         enabledSwitch.setChecked(ScreenService.isRunning());
 
         final Intent serviceIntent = new Intent(this, ScreenService.class);

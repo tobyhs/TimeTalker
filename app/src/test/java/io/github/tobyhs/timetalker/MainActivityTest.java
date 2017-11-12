@@ -25,9 +25,8 @@ public class MainActivityTest {
         ServiceController<ScreenService> controller = Robolectric.buildService(ScreenService.class);
         controller.create();
         MainActivity activity = Robolectric.setupActivity(MainActivity.class);
-        ComponentName componentName = new ComponentName(activity, ScreenService.class);
 
-        Switch enabledSwitch = (Switch) activity.findViewById(R.id.enabledSwitch);
+        Switch enabledSwitch = activity.findViewById(R.id.enabledSwitch);
         assertThat(enabledSwitch.isChecked(), is(true));
 
         controller.destroy();
@@ -38,7 +37,7 @@ public class MainActivityTest {
         MainActivity activity = Robolectric.setupActivity(MainActivity.class);
         ShadowActivity shadowActivity = shadowOf(activity);
         ComponentName serviceComponent = new ComponentName(activity, ScreenService.class);
-        Switch enabledSwitch = (Switch) activity.findViewById(R.id.enabledSwitch);
+        Switch enabledSwitch = activity.findViewById(R.id.enabledSwitch);
 
         enabledSwitch.toggle();
         assertThat(shadowActivity.getNextStartedService().getComponent(), is(serviceComponent));
