@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ServiceController;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowTextToSpeech;
 import org.robolectric.shadows.ShadowToast;
 
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class DetectorServiceTest {
     @Test
     public void onBind_ReturnsNull() {
