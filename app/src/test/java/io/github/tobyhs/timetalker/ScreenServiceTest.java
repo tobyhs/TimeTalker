@@ -10,8 +10,8 @@ import org.junit.runner.RunWith;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.android.controller.ServiceController;
 import org.robolectric.shadows.ShadowApplication;
-import org.robolectric.util.ServiceController;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
