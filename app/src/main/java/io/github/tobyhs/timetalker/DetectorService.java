@@ -70,7 +70,9 @@ public class DetectorService extends Service implements ShakeDetector.Listener {
 
     @Override
     public void hearShake() {
-        if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
+        final boolean shouldSpeak = audioManager.getMode() == AudioManager.MODE_NORMAL &&
+                audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL;
+        if (shouldSpeak) {
             textToSpeech.speak(timeFormatter.format(), TextToSpeech.QUEUE_FLUSH, null);
         }
     }

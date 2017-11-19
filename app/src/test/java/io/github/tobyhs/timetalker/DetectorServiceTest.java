@@ -65,8 +65,7 @@ public class DetectorServiceTest {
         service.hearShake();
 
         ShadowTextToSpeech shadowTts = shadowOf(service.textToSpeech);
-        String spokenText = shadowTts.getLastSpokenText();
-        assertThat(spokenText, is(formattedTime));
+        assertThat(shadowTts.getLastSpokenText(), is(formattedTime));
 
         controller.destroy();
         assertThat(shadowTts.isShutdown(), is(true));
@@ -79,8 +78,16 @@ public class DetectorServiceTest {
         audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 
         service.hearShake();
+        assertThat(shadowOf(service.textToSpeech).getLastSpokenText(), is(nullValue()));
+    }
 
-        ShadowTextToSpeech ttsShadow = shadowOf(service.textToSpeech);
-        assertThat(ttsShadow.getLastSpokenText(), is(nullValue()));
+    @Test
+    public void hearShake_withNonNormalAudioMode_doesNotSpeak() {
+        DetectorService service = Robolectric.setupService(DetectorService.class);
+        AudioManager audioManager = (AudioManager) service.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setMode(AudioManager.MODE_IN_CALL);
+
+        service.hearShake();
+        assertThat(shadowOf(service.textToSpeech).getLastSpokenText(), is(nullValue()));
     }
 }
