@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Time Talker</string>
 
-    <string name="enabled">Enabled</string>
-    <string name="off">Off</string>
-    <string name="on">On</string>
     <string name="ttsInitFailure">%1$s: Failed to initialize TextToSpeech</string>
 </resources>
