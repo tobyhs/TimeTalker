@@ -1,5 +1,8 @@
 # Time Talker
 
+Note: This app is no longer maintained because it won't work when targeting
+Android 8.0 due to background service limitations.
+
 Time Talker is an Android app that speaks the time.
 
 You'll need to enable this by adding the home screen widget. Make sure your
