@@ -1,7 +1,8 @@
 # Time Talker
 
 Note: This app is no longer maintained because it won't work when targeting
-Android 8.0 due to background service limitations.
+Android 8.0 due to background service limitations. This app is being rewritten
+at https://github.com/tobyhs/TimeTalker2.
 
 Time Talker is an Android app that speaks the time.
 
